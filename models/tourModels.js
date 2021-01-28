@@ -21,6 +21,16 @@ const Tour = mongoose.model("Tour", tourSchema); // inside the model name will c
 
 module.exports = Tour;
 
+
+
+
+
+
+
+
+
+
+
 // const testTour = new Tour({
 //     name: "The Forest jack",
 //     rating: 4.96,
