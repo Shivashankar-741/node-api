@@ -1,0 +1,15 @@
+
+// const testTour = new Tour({
+//     name: "The Forest jack",
+//     rating: 4.96,
+//     price: 497,
+//   });
+
+//   testTour
+//     .save()
+//     .then((doc) => {
+//       console.log(doc);
+//     })
+//     .catch((err) => {
+//       console.log("ERROR:", err);
+//     });

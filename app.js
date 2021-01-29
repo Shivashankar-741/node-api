@@ -1,8 +1,8 @@
-const express = require("express");
-const morgan = require("morgan");
+import express from "express";
+import morgan from "morgan";
 
-const tourRouter = require("./routes/tourRoutes");
-const userRouter = require("./routes/userRoutes");
+import tourRouter from "./routes/tourRoutes";
+import userRouter from "./routes/userRoutes";
 
 const app = express();
 
@@ -35,4 +35,4 @@ app.use("/api/v1/users", userRouter);
 
 // 4)START SERVER
 
-module.exports = app;
+export default app;

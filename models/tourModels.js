@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const tourSchema = new mongoose.Schema({
   name: { type: String, required: [true, "A tour must have a name"], unique: true, trim: true },
@@ -13,35 +13,10 @@ const tourSchema = new mongoose.Schema({
   description: { type: String, trim: true },
   imageCover: { type: String, required: [true, "A tour must have a cover image"] },
   images: [String],
-  createdAt: { type: Date, default: Date.now() },
+  createdAt: { type: Date, default: Date.now(), select: false },
   startDates: [Date],
 });
 
-const Tour = mongoose.model("Tour", tourSchema); // inside the model name will create the collection name+s in db
+export const Tour = mongoose.model("Tour", tourSchema); // inside the model name will create the collection name+s in db
 
-module.exports = Tour;
-
-
-
-
-
-
-
-
-
-
-
-// const testTour = new Tour({
-//     name: "The Forest jack",
-//     rating: 4.96,
-//     price: 497,
-//   });
-
-//   testTour
-//     .save()
-//     .then((doc) => {
-//       console.log(doc);
-//     })
-//     .catch((err) => {
-//       console.log("ERROR:", err);
-//     });
+// module.exports = Tour;

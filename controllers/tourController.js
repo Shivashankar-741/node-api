@@ -1,6 +1,13 @@
-const Tour = require("../models/tourModels");
+import { Tour } from "../models/tourModels";
 
-exports.getAllTours = async (req, res) => {
+export const aliasTopTours = async (req, res, next) => {
+  req.query.limit = "5";
+  req.query.sort = "-ratingsAverage,price";
+  req.query.fields = "name,price,ratingsAverage,summary,difficulty";
+  next();
+};
+
+export const getAllTours = async (req, res) => {
   try {
     //BUILD QUERY
     //1a) filtering
@@ -21,6 +28,27 @@ exports.getAllTours = async (req, res) => {
       query = query.sort(sortBy);
     } else {
       query = query.sort("-createdAt");
+    }
+
+    //3) Field limiting
+    if (req.query.fields) {
+      console.log(req.query);
+      const fields = req.query.fields.split(",").join(" "); // name,duration,price => select("name duration price")
+      query = query.select(fields);
+    } else {
+      query = query.select("-__v");
+    }
+
+    // 4) Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTours = await Tour.countDocuments();
+      if (skip >= numTours) throw new Error("This page does not exist");
     }
 
     //EXECUTE QUERY
@@ -52,7 +80,7 @@ exports.getAllTours = async (req, res) => {
   }
 };
 
-exports.getTour = async (req, res) => {
+export const getTour = async (req, res) => {
   try {
     const tour = await Tour.findById(req.params.id);
     //Tour.findOne({_id:req.params.id}) => filter object
@@ -71,7 +99,7 @@ exports.getTour = async (req, res) => {
   }
 };
 
-exports.createTour = async (req, res) => {
+export const createTour = async (req, res) => {
   try {
     const newTour = await Tour.create(req.body);
     res.status(201).json({
@@ -88,7 +116,7 @@ exports.createTour = async (req, res) => {
   }
 };
 
-exports.updateTour = async (req, res) => {
+export const updateTour = async (req, res) => {
   try {
     const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -108,7 +136,7 @@ exports.updateTour = async (req, res) => {
   }
 };
 
-exports.deleteTour = async (req, res) => {
+export const deleteTour = async (req, res) => {
   try {
     await Tour.findByIdAndDelete(req.params.id);
 
