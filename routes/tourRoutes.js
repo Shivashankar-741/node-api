@@ -1,25 +1,20 @@
 import express from "express";
-import {
-  aliasTopTours,
-  getAllTours,
-  createTour,
-  getTour,
-  updateTour,
-  deleteTour,
-  getTourStats,
-  getMonthlyPlan,
-} from "../controllers/tourController";
+import * as tourController from "../controllers/tourController";
 
 const router = express.Router();
 
 // router.param("id", tourController.checkID);
 
-router.route("/top-5-cheap").get(aliasTopTours, getAllTours);
+router.route("/top-5-cheap").get(tourController.aliasTopTours, tourController.getAllTours);
 
-router.route("/tour-stats").get(getTourStats);
-router.route("/monthly-plan/:year").get(getMonthlyPlan);
+router.route("/tour-stats").get(tourController.getTourStats);
+router.route("/monthly-plan/:year").get(tourController.getMonthlyPlan);
 
-router.route("/").get(getAllTours).post(createTour);
-router.route("/:id").get(getTour).patch(updateTour).delete(deleteTour);
+router.route("/").get(tourController.getAllTours).post(tourController.createTour);
+router
+  .route("/:id")
+  .get(tourController.getTour)
+  .patch(tourController.updateTour)
+  .delete(tourController.deleteTour);
 
 export default router;
